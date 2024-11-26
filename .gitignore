@@ -2,3 +2,7 @@
 .env
 .DS_Store
 /articles
+__pycache__
+/__pycache__
+/brainmdd.eeg-info
+brainmdd.egg-info/*

@@ -10,24 +10,24 @@ import matplotlib.pyplot as plt
 
 
 class EEGPowerSpectrum:
-    def __init__(self, data, fs):
+    def __init__(self, data, fs, ifNormalize=True):
         self.data = data
         self.fs = fs
         self.freqs = None
         self.psd = None
-        self.delta = None
-        self.theta = None
-        self.alpha = None
-        self.beta = None
-        self.gamma = None
+        self.deltaPsd = None
+        self.thetaPsd = None
+        self.alphaPsd = None
+        self.betaPsd = None
+        self.gammaPsd = None
+        self.isNormalized = ifNormalize
     
        
-    def compute_power_spectrum(self):
-        self.freqs, self.psd = signal.welch(self.data, fs=self.fs)
-        return self.freqs, self.psd 
+    def compute_power_spectrum(self, data):
+        self.freqs, self.psd = signal.welch(data, fs=self.fs, nperseg=self.fs, noverlap=self.fs/2)
     
     
-    def compute_band_power(self, ifNormalize=True):
+    def compute_band_power(self):
         self.deltaPsd = self.psd[(self.freqs >= 0.5) & (self.freqs < 4)].sum()
         self.thetaPsd = self.psd[(self.freqs >= 4) & (self.freqs < 8)].sum()
         self.alphaPsd = self.psd[(self.freqs >= 8) & (self.freqs < 12)].sum()
@@ -35,32 +35,40 @@ class EEGPowerSpectrum:
         self.gammaPsd = self.psd[(self.freqs >= 28) & (self.freqs < 40)].sum()
         self.eegPsd = self.psd[(self.freqs >= 0.5) & (self.freqs < 40)].sum()
         
-        if ifNormalize:
-            self.delta = self.deltaPsd / self.eegPsd
-            self.theta = self.thetaPsd / self.eegPsd
-            self.alpha = self.alphaPsd / self.eegPsd
-            self.beta = self.betaPsd / self.eegPsd
-            self.gamma = self.gammaPsd / self.eegPsd
-        return self.delta, self.theta, self.alpha, self.beta, self.gamma
+        if self.isNormalized:
+            self.deltaPsd = self.deltaPsd / self.eegPsd
+            self.thetaPsd = self.thetaPsd / self.eegPsd
+            self.alphaPsd = self.alphaPsd / self.eegPsd
+            self.betaPsd = self.betaPsd / self.eegPsd
+            self.gammaPsd = self.gammaPsd / self.eegPsd
+    
+
+    def run(self):
+        # expected input.shape = (n_epochs, n_channels, n_samples)
+        results = []
+        for epoch in self.data:
+            eachEpoch = []
+            for channel in epoch:
+                eegData = channel
+                self.compute_power_spectrum(eegData)
+                self.compute_band_power()
+                eachEpoch.append([self.deltaPsd, self.thetaPsd, self.alphaPsd, self.betaPsd, self.gammaPsd])
+            results.append(eachEpoch)
+        results = np.array(results)
+        results = np.transpose(results, (0, 2, 1))    
+        return np.array(results)
+            
 
 
 
 if __name__ == '__main__':
-    sinWave = np.sin(2 * np.pi * 30 * np.linspace(0, 1, 1000))
+    sinWave = np.sin(2 * np.pi * 27 * np.linspace(0, 1, 1000))
     fs = 1000
-    powerSpectrum = EEGPowerSpectrum(sinWave, fs)
+    data = np.array([sinWave])
+    data = np.expand_dims(data, axis=0)
     
-    freqs, psd = powerSpectrum.compute_power_spectrum()
-    delta, theta, alpha, beta, gamma = powerSpectrum.compute_band_power()
-    # plot power spectrum
-    plt.figure()
-    plt.plot(freqs, psd)
-    plt.xlabel('Frequency (Hz)')
-    plt.ylabel('Power spectral density (V^2/Hz)')
+    eegPowerSpectrum = EEGPowerSpectrum(data, fs)
+    results = eegPowerSpectrum.run()    
+    print(results)
+    print(results.shape)
     
-    # plot band power
-    plt.figure()
-    plt.bar(['delta', 'theta', 'alpha', 'beta', 'gamma'], [delta, theta, alpha, beta, gamma])
-    plt.xlabel('Frequency band')
-    plt.ylabel('Power')
-    plt.show()
