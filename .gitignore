@@ -7,3 +7,9 @@ __pycache__
 /brainmdd.eeg-info
 brainmdd.egg-info/*
 /result
+models/CD/Decision Tree.pkl
+models/CD/KNN.pkl
+models/CD/LDA.pkl
+models/CD/Logistic Regression.pkl
+models/CD/Random Forest.pkl
+models/CD/SVM.pkl
