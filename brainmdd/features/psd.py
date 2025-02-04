@@ -1,7 +1,3 @@
-
-
-# do power spectrum analysis; delta, theta, alpha, beta, gamma
-
 import numpy as np
 import scipy.signal as signal
 import mne
@@ -11,6 +7,13 @@ import matplotlib.pyplot as plt
 
 class EEGPowerSpectrum:
     def __init__(self, data, fs, ifNormalize=True):
+        """
+        Initialize the EEGCoherence class.
+        
+        :param data: EEG data of shape (n_epochs, n_channels, n_samples)
+        :param fs: Sampling frequency in Hz
+        :param ifNormalize: Normalize band power by total power
+        """
         self.data = data
         self.fs = fs
         self.freqs = None
@@ -71,4 +74,20 @@ if __name__ == '__main__':
     results = eegPowerSpectrum.run()    
     print(results)
     print(results.shape)
+    
+    # plot power spectrum   
+    plt.figure()
+    plt.plot(eegPowerSpectrum.freqs, eegPowerSpectrum.psd)
+    plt.title('Power spectrum')
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Power/Frequency (dB/Hz)')
+    plt.show()
+    
+    # scatter plot normalized band power
+    plt.figure()
+    plt.scatter(np.arange(5), results[0, 0, :])
+    plt.title('Normalized band power')
+    plt.xlabel('Band')
+    plt.ylabel('Power')
+    plt.show()
     
