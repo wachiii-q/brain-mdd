@@ -35,3 +35,8 @@
 When thing broken, you can try to reinstall the package. 
 
     pip install -e . --force-reinstall
+</br>
+
+***
+### Contributors
+@wachiii-q </br> @limmtheping
