@@ -28,12 +28,15 @@
 
 ### Environments Update
 
-Sometimes, we add new packages to the project. So, you need to update your environment to get the latest packages. It's recommended to update your environment every time you pull the latest code.
-
     pip install -e .
 
 ### Reinstalling
 
-When thing broken, you can try to reinstall the package. And please make sure you're in the right virtual environment, using right version of python.
+When thing broken, you can try to reinstall the package. 
 
     pip install -e . --force-reinstall
+</br>
+
+***
+### Contributors
+@wachiii-q </br> @limmtheping
