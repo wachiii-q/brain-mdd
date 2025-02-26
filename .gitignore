@@ -14,3 +14,4 @@ models/CD/Logistic Regression.pkl
 models/CD/Random Forest.pkl
 models/CD/SVM.pkl
 /features
+/sandbox
