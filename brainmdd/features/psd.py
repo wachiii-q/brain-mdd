@@ -7,9 +7,7 @@ import matplotlib.pyplot as plt
 
 class EEGPowerSpectrum:
     def __init__(self, data, fs, ifNormalize=True):
-        """
-        Initialize the EEGCoherence class.
-        
+        """        
         :param data: EEG data of shape (n_epochs, n_channels, n_samples)
         :param fs: Sampling frequency in Hz
         :param ifNormalize: Normalize band power by total power
