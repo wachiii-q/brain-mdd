@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 class EEGPowerSpectrum:
-     def __init__(self, data, fs, ifNormalize=True):
+    def __init__(self, data, fs, ifNormalize=True):
         """        
         :param data: EEG data of shape (n_epochs, n_channels, n_samples)
         :param fs: Sampling frequency in Hz
