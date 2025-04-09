@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE_DIR="/Users/wachiii/Workschii/brain-mdd/data/dataset/predct/eyeopen_16Channels/epoch60sFiles"
+SOURCE_DIR="/Users/wachiii/Workschii/brain-mdd/data/dataset/predct/eyeopen_16Channels/epoch20sFiles"
 
 HC_DIR="$SOURCE_DIR/hc"
 MDD_DIR="$SOURCE_DIR/mdd"
